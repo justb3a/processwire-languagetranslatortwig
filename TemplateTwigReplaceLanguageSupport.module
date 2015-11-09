@@ -10,9 +10,9 @@
  *
  *
  * @author Tabea David <td@kf-interactive.com>
- * @version 0.0.5
+ * @version 0.0.6
  * @copyright Copyright (c) 2015 KF Interactive, www.kf-interactive.com, <info@kf-interactive.com>
- * @see https://github.com/justonestep/processwire-processlanguagetranslatortwigsupport
+ * @see https://github.com/justonestep/processwire-templatetwiglanguagesupport
  * @see http://www.processwire.com
  */
 
@@ -31,12 +31,13 @@ class TemplateTwigReplaceLanguageSupport extends WireData implements Module, Con
   public static function getModuleInfo() {
     return array(
       'title' => 'Template Twig Replace Language Support',
-      'version' => 005,
+      'version' => 006,
       'summary' => 'Multi-language support for Twig template engine',
-      'href' => 'https://github.com/justonestep/processwire-processlanguagetranslatortwigsupport',
+      'href' => 'https://github.com/justonestep/processwire-templatetwiglanguagesupport',
       'singular' => true,
       'autoload' => true,
-      'requires' => 'TemplateTwigReplace'
+      'requires' => array('TemplateTwigReplace', 'LanguageTranslatorList'),
+      'icon' => 'globe'
     );
   }
 
