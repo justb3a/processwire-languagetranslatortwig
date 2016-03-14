@@ -2,11 +2,12 @@
 
 # Template Twig Replace Language Support
 
+Adds twig support for language translator list.
 
-Adds twig support for language translator.
+Supports the following modules:
 
-Designed for use with ProcessWire > 2.6
-[http://processwire.com](http://processwire.com)
+* [TemplateTwigReplace](http://modules.processwire.com/modules/template-engine-twig/)
+* [TemplateEngineTwig](http://modules.processwire.com/modules/template-twig-replace/)
 
 ## Installation
 

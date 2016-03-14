@@ -5,12 +5,12 @@
  *
  * See README.md for usage instructions.
  *
- * ProcessWire 2.x
+ * ProcessWire 2.x, 3.x
  * Licensed under GNU/GPL v2, see LICENSE.TXT
  *
  *
  * @author Tabea David <td@kf-interactive.com>
- * @version 0.0.6
+ * @version 1.0.0
  * @copyright Copyright (c) 2015 KF Interactive, www.kf-interactive.com, <info@kf-interactive.com>
  * @see https://github.com/justonestep/processwire-templatetwiglanguagesupport
  * @see http://www.processwire.com
@@ -31,12 +31,12 @@ class TemplateTwigReplaceLanguageSupport extends WireData implements Module, Con
   public static function getModuleInfo() {
     return array(
       'title' => 'Template Twig Replace Language Support',
-      'version' => 006,
-      'summary' => 'Multi-language support for Twig template engine',
+      'version' => 100,
+      'summary' => 'Multi-language support for Twig template engine (TemplateTwigReplace or TemplateEngineTwig)',
       'href' => 'https://github.com/justonestep/processwire-templatetwiglanguagesupport',
       'singular' => true,
       'autoload' => true,
-      'requires' => array('TemplateTwigReplace', 'LanguageTranslatorList'),
+      'requires' => array('LanguageTranslatorList'),
       'icon' => 'globe'
     );
   }
@@ -89,11 +89,30 @@ EOD;
    *
    */
   public function init() {
-    // retrieve the Twig_Environment instance
-    $this->twig = wire('modules')->get('TemplateTwigReplace')->getTwig();
+    // switch depending on installed template engine module
+    if ($this->modules->get('TemplateTwigReplace')) {
+      $this->twig = wire('modules')->get('TemplateTwigReplace')->getTwig();
+      $this->addIntlExtension();
+      $this->addTranslationFunction();
+    } else if ($this->modules->get('TemplateEngineTwig')) {
+      $this->addHookAfter('TemplateEngineTwig::initTwig', $this, 'addTranslationFunctions');
+    } else {
+      $this->session->message($this->_('Could not initialize Twig Translation Module: neither module `TemplateTwigReplace` nor `TemplateEngineTwig` is installed.'));
+    }
+  }
 
-    $this->addIntlExtension();
+  /**
+    * Hook callback for PageRender::renderPage
+    *
+    * Replaces default page rendering entirely.
+    *
+    * @param HookEvent $event The hook event
+    * @throws WirePermissionException Page is not currently viewable.
+    */
+  public function addTranslationFunctions(HookEvent $event) {
+    $this->twig = $event->arguments(0);
     $this->addTranslationFunction();
+    $this->addIntlExtension();
   }
 
   /*
@@ -102,7 +121,7 @@ EOD;
   private function addTranslationFunction() {
     // new twig function to enable translations
     // @see: http://processwire.com/api/multi-language-support/code-i18n/
-    $function = new Twig_SimpleFunction("__", function ($text, $filename = '_strings', $context = '') {
+    $function = new \Twig_SimpleFunction("__", function ($text, $filename = '_strings', $context = '') {
       if (!empty($filename)) {
         // translation inside twig template folders
         if ($this->twig->getLoader()->exists($filename . '.twig')) {
@@ -116,6 +135,8 @@ EOD;
           return __($text, $filename . '.php', $context);
         } elseif (file_exists($filename . '.module')) {
           return __($text, $filename . '.module', $context);
+        } else {
+          return $text;
         }
       }
     });
@@ -141,4 +162,5 @@ EOD;
       $this->twig->addExtension(new Twig_Extensions_Extension_Intl());
     }
   }
+
 }
