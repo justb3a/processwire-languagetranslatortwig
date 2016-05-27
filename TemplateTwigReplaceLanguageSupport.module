@@ -156,7 +156,7 @@ EOD;
   private function addIntlExtension() {
     if ($this->intlextension === 1) {
       if (!class_exists('Twig_Extensions_Extension_Intl')) {
-        require(wire('config')->paths->ProcessLanguageTranslatorTwigSupport . 'vendor/autoload.php');
+        require(wire('config')->paths->TemplateTwigReplaceLanguageSupport . 'vendor/autoload.php');
       }
 
       $this->twig->addExtension(new Twig_Extensions_Extension_Intl());
