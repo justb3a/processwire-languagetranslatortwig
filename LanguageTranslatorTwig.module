@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ProcessWire Template Twig Replace Language Support
+ * ProcessWire Language Translator Twig
  *
  * See README.md for usage instructions.
  *
@@ -10,16 +10,16 @@
  *
  *
  * @author Tabea David <td@kf-interactive.com>
- * @version 1.0.0
- * @copyright Copyright (c) 2015 KF Interactive, www.kf-interactive.com, <info@kf-interactive.com>
- * @see https://github.com/justonestep/processwire-templatetwiglanguagesupport
+ * @version 1.0.1
+ * @copyright Copyright (c) 2016 KF Interactive, www.kf-interactive.com, <info@kf-interactive.com>
+ * @see https://github.com/justonestep/processwire-languagetranslatortwig
  * @see http://www.processwire.com
  */
 
 /**
- * Class TemplateTwigReplaceLanguageSupport
+ * Class LanguageTranslatorTwig
  */
-class TemplateTwigReplaceLanguageSupport extends WireData implements Module, ConfigurableModule {
+class LanguageTranslatorTwig extends WireData implements Module, ConfigurableModule {
 
   /**
    * Retrieves module meta data
@@ -30,10 +30,10 @@ class TemplateTwigReplaceLanguageSupport extends WireData implements Module, Con
    */
   public static function getModuleInfo() {
     return array(
-      'title' => 'Template Twig Replace Language Support',
-      'version' => 100,
+      'title' => 'Language Translator Twig',
+      'version' => 101,
       'summary' => 'Multi-language support for Twig template engine (TemplateTwigReplace or TemplateEngineTwig)',
-      'href' => 'https://github.com/justonestep/processwire-templatetwiglanguagesupport',
+      'href' => 'https://github.com/justonestep/processwire-languagetranslatortwig',
       'singular' => true,
       'autoload' => true,
       'requires' => array('LanguageTranslatorList'),
@@ -156,7 +156,7 @@ EOD;
   private function addIntlExtension() {
     if ($this->intlextension === 1) {
       if (!class_exists('Twig_Extensions_Extension_Intl')) {
-        require(wire('config')->paths->TemplateTwigReplaceLanguageSupport . 'vendor/autoload.php');
+        require(wire('config')->paths->LanguageTranslatorTwig . 'vendor/autoload.php');
       }
 
       $this->twig->addExtension(new Twig_Extensions_Extension_Intl());
