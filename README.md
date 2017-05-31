@@ -54,7 +54,7 @@ Example on how ``_strings.twig`` could look like:
 ```html
 {# Intentionally commented out
 
-{% set s = '_strings %}
+{% set s = '_strings' %}
 
 {{ __('Save', s) }}
 {{ __('Send', s) }}
